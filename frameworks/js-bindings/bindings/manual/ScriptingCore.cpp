@@ -27,6 +27,7 @@
 // Removed in Firefox v27, use 'js/OldDebugAPI.h' instead
 //#include "jsdbgapi.h"
 #include "js/OldDebugAPI.h"
+#include "jsprf.h"
 
 #include "cocos2d.h"
 #include "local-storage/LocalStorage.h"
@@ -806,6 +807,7 @@ void ScriptingCore::cleanup()
 
 void ScriptingCore::reportError(JSContext *cx, const char *message, JSErrorReport *report)
 {
+    js_DumpBacktrace(cx);
     js_log("%s:%u:%s\n",
             report->filename ? report->filename : "<no filename=\"filename\">",
             (unsigned int) report->lineno,
