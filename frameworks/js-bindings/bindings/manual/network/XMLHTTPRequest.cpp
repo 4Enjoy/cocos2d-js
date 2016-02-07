@@ -750,7 +750,7 @@ JS_BINDED_FUNC_IMPL(MinXmlHttpRequest, send)
                 return false;
             }
         }
-        else
+        else if(!args.get(0).isUndefined())
         {
             return false;
         }
