@@ -208,12 +208,15 @@ void MinXmlHttpRequest::handle_requestResponse(cocos2d::network::HttpClient *sen
     
     if (!response->isSucceed())
     {
-        CCLOG("Response failed, error buffer: %s", response->getErrorBuffer());
+        CCLOG("[HTTP] Response failed, error buffer: %s", response->getErrorBuffer());
         if (statusCode == 0 || statusCode == -1)
         {
             _errorFlag = true;
             _status = 0;
             _statusText.clear();
+            
+            _readyState = DONE;
+            _notify(_onreadystateCallback);
             _notify(_onerrorCallback);
             _notify(_onloadendCallback);
             return;
@@ -598,6 +601,14 @@ JS_BINDED_PROP_GET_IMPL(MinXmlHttpRequest, responseText)
     return true;
 }
 
+inline std::string outputUrl(const std::string& str) {
+    const int MAX_URL_LENGTH = 80;
+    if(str.size() <= MAX_URL_LENGTH) {
+        return str;
+    }
+    return str.substr(0, MAX_URL_LENGTH) + "...";
+}
+
 /**
  *  @brief get response of latest XHR
  *
@@ -697,7 +708,7 @@ JS_BINDED_FUNC_IMPL(MinXmlHttpRequest, open)
             _httpRequest->setUrl(_url.c_str());
         }
         
-       printf("[XMLHttpRequest] %s %s\n", _meth.c_str(), _url.c_str());
+       printf("[XMLHttpRequest] %s %s\n", _meth.c_str(), outputUrl(_url).c_str());
         
         _isNetwork = true;
         _readyState = OPENED;
