@@ -38,6 +38,9 @@
 
 #include <assert.h>
 #include <memory>
+#include <functional>
+
+typedef std::function<void (JSContext *cx, const char *message, JSErrorReport *report)> FNJSErrorCallback;
 
 #define ENGINE_VERSION "Cocos2d-JS v3.6.1"
 
@@ -64,6 +67,8 @@ private:
     //JS::Heap<JSObject*> _global;
     //JS::Heap<JSObject*> _debugGlobal;
     SimpleRunLoop* _runLoop;
+    
+    FNJSErrorCallback _error_callback;
 
     bool _callFromScript;
     ScriptingCore();
@@ -77,6 +82,10 @@ public:
         }
         return pInstance;
     };
+    
+    inline void setErrorCallback(FNJSErrorCallback callback) {
+        _error_callback = callback;
+    }
 
     virtual cocos2d::ccScriptType getScriptType() { return cocos2d::kScriptTypeJavascript; };
 
