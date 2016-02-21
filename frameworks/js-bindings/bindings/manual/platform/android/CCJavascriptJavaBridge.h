@@ -79,7 +79,7 @@ private:
         , m_returnType(TypeVoid)
         , m_argumentsCount(0)
         , m_retjstring(NULL)
-        , m_env(NULL)
+        //, m_env(NULL)
         , m_classID(NULL)
         , m_methodID(NULL)
         {
@@ -96,9 +96,7 @@ private:
             return m_error;
         }
 
-        JNIEnv *getEnv(void) {
-            return m_env;
-        }
+        JNIEnv *getEnv(void);
 
         int argumentTypeAtIndex(size_t index) {
             return m_argumentsType.at(index);
@@ -134,7 +132,7 @@ private:
         ReturnValue m_ret;
         jstring     m_retjstring;
 
-        JNIEnv     *m_env;
+        //JNIEnv     *m_env;
         jclass      m_classID;
         jmethodID   m_methodID;
 
